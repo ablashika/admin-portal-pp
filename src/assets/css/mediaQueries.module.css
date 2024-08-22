@@ -1,0 +1,41 @@
+/* Small devices (landscape phones, 576px and up) */
+@media only screen and (min-width: 576px) {}
+
+/* medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+    .form_card {
+        width: 85%;
+        height: 60%;
+    }
+
+    .grid {
+        display: grid;
+        width: 100%;
+        height: 100%;
+        grid-template-columns: 20% 1fr;
+    }
+
+    .grid_column {
+        grid-column: 3 / span 4;
+    }
+
+    .header_height {
+        height: 4rem;
+    }
+
+    .sidebar_logo_image {
+        width: 15%;
+        height: auto;
+    }
+
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {}
