@@ -5,7 +5,7 @@ const TransactionsAmount = () => {
         <>
             <div className="col-12 h-100 col-md-6 p-0 pt-3 pe-md-3">
                 {/* Successful amount */}
-                <div className="py-3 px-3 card h-100 rounded border border-success shadow d-flex flex-column justify-content-center align-items-start">
+                <div className="border-0 py-3 px-3 card h-100 rounded shadow d-flex flex-column justify-content-center align-items-start">
                     <svg xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 100 100"
                         fill="#dc3545"
@@ -26,7 +26,7 @@ const TransactionsAmount = () => {
             </div>
             <div className="col-12 h-100 col-md-6 pt-3 p-0 ps-md-3">
                 {/* Failed amount */}
-                <div className="py-3 px-3 card h-100 rounded border-success shadow d-flex flex-column justify-content-center align-items-start">
+                <div className="border-0 py-3 px-3 card h-100 rounded shadow d-flex flex-column justify-content-center align-items-start">
                     <svg xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 64 64"
                         fill="#dc3545"

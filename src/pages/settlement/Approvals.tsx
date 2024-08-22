@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -6,17 +7,16 @@ import {
   GridRowId,
   GridToolbar,
 } from "@mui/x-data-grid";
-import React from "react";
+import Header from "../../components/header/Header";
+import { styled } from "@mui/material/styles";
 import mediaQueries from "../../assets/css/mediaQueries.module.css";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
-import { styled } from "@mui/material/styles";
-import Header from "../../components/header/Header";
-import Box from "@mui/material/Box";
+import React from "react";
 
 type Row = (typeof initialRows)[number];
 
-const Approvals = () => {
+const Transactions = () => {
   const [rows, setRows] = React.useState<Row[]>(initialRows);
 
   const view = React.useCallback(
@@ -39,10 +39,11 @@ const Approvals = () => {
     []
   );
 
+  // Define the columns
   const columns: GridColDef<(typeof initialRows)[number]>[] = [
     {
-      field: "transaction_date",
-      renderHeader: () => <p className="text-wrap fw-bold">{"Date"}</p>,
+      field: "date_initiated",
+      renderHeader: () => <p className="text-wrap fw-bold">{"Date Initiated"}</p>,
       type: "date",
       resizable: false,
       width: 150,
@@ -51,16 +52,9 @@ const Approvals = () => {
       },
     },
     {
-      field: "client",
-      renderHeader: () => <p className="text-wrap fw-bold">{"Client Name"}</p>,
-      type: "string",
-      resizable: false,
-      width: 220,
-    },
-    {
-      field: "client_description",
+      field: "description",
       renderHeader: () => (
-        <p className="text-wrap fw-bold">{"Client Description"}</p>
+        <p className="text-wrap fw-bold">{"Description"}</p>
       ),
       type: "string",
       hideable: false,
@@ -68,20 +62,45 @@ const Approvals = () => {
       width: 200,
     },
     {
-      field: "recipient_name",
-      renderHeader: () => (
-        <p className="text-wrap fw-bold">{"Recipient Name"}</p>
-      ),
-      type: "string",
+      field: "start_date",
+      renderHeader: () => <p className="text-wrap fw-bold">{"Start Date"}</p>,
+      type: "date",
       resizable: false,
-      width: 200,
+      width: 150,
+      valueFormatter: ({ value }) => {
+        new Date(value);
+      },
     },
     {
-      field: "account_type",
-      renderHeader: () => <p className="text-wrap fw-bold">{"Account Type"}</p>,
+      field: "end_date",
+      renderHeader: () => <p className="text-wrap fw-bold">{"End Date"}</p>,
+      type: "date",
+      resizable: false,
+      width: 150,
+      valueFormatter: ({ value }) => {
+        new Date(value);
+      },
+    },
+    {
+      field: "account_number",
+      renderHeader: () => <p className="text-wrap fw-bold">{"Account Number"}</p>,
       type: "string",
       resizable: false,
-      width: 120,
+      width: 220,
+    },
+    {
+      field: "account_name",
+      renderHeader: () => <p className="text-wrap fw-bold">{"Account Name"}</p>,
+      type: "string",
+      resizable: false,
+      width: 220,
+    },
+    {
+      field: "account_issuer",
+      renderHeader: () => <p className="text-wrap fw-bold">{"Account Issuer"}</p>,
+      type: "string",
+      resizable: false,
+      width: 220,
     },
     {
       field: "amount",
@@ -97,41 +116,8 @@ const Approvals = () => {
       width: 120,
     },
     {
-      field: "charge",
-      renderHeader: () => <p className="text-wrap fw-bold">{"Charge"}</p>,
-      valueFormatter: (value?: number) => {
-        if (value == null) {
-          return "";
-        }
-        return `Gh\u20B5 ${value.toFixed(2)}`;
-      },
-      type: "string",
-      resizable: false,
-      width: 120,
-    },
-    {
-      field: "e_levy",
-      renderHeader: () => <p className="text-wrap fw-bold">{"E-levy"}</p>,
-      valueFormatter: (value?: number) => {
-        if (value == null) {
-          return "";
-        }
-        return `Gh\u20B5 ${value.toFixed(2)}`;
-      },
-      type: "string",
-      resizable: false,
-      width: 120,
-    },
-    {
-      field: "debit",
-      renderHeader: () => <p className="text-wrap fw-bold">{"Debit"}</p>,
-      type: "string",
-      resizable: false,
-      width: 100,
-    },
-    {
-      field: "credit",
-      renderHeader: () => <p className="text-wrap fw-bold">{"Credit"}</p>,
+      field: "status",
+      renderHeader: () => <p className="text-wrap fw-bold">{"Status"}</p>,
       type: "string",
       resizable: false,
       width: 100,
@@ -142,7 +128,6 @@ const Approvals = () => {
       width: 80,
       renderHeader: () => <p className="text-wrap fw-bold">{"Action"}</p>,
       getActions: (params) => {
-        const { debit, credit } = params.row;
         const actions = [
           <GridActionsCellItem
             icon={<VisibilityIcon />}
@@ -153,18 +138,11 @@ const Approvals = () => {
         ];
 
         if (
-          debit === "Failed" ||
-          debit === "Authorization Pending" ||
-          credit === "Failed" ||
-          credit === "Authorization Pending"
+          status === "Failed" ||
+          status === "Authorization Pending" 
         ) {
           actions.push(
-            <GridActionsCellItem
-              icon={<EditIcon />}
-              label="Edit"
-              onClick={edit(params.id)}
-              showInMenu
-            />
+           
           );
         }
 
@@ -269,13 +247,55 @@ const Approvals = () => {
         <div
           className={`col-md-8 d-flex align-items-center justify-content-start ${mediaQueries.header_height}`}
         >
-          <h6 className="text-danger m-0">Clients' Transactions</h6>
+          <h6 className="text-danger m-0">Pending Sttlements</h6>
         </div>
       </Header>
-
-      {/* Table */}
       <div className="container">
-        <div className="py-5">
+        <div className="pt-3">
+          {/* Card */}
+          <div className="row m-0 mb-5 mt-lg-4">
+            <div className="col-md-6 col-lg-3">
+              <div className="card py-3">
+                <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                  <p className="card-title fs-4">Successful</p>
+                  <h5 className="card-text text-danger fs-3 fw-bold">
+                    1234.00
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-lg-3 mt-4 mt-md-0">
+              <div className="card py-3">
+                <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                  <p className="card-title fs-4">Failed</p>
+                  <h5 className="card-text text-danger fs-3 fw-bold">
+                    Gh&#8373; 134.00
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-lg-3 mt-4 mt-md-4 mt-lg-0">
+              <div className="card py-3">
+                <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                  <p className="card-title fs-4">Amount</p>
+                  <h5 className="card-text text-danger fs-3 fw-bold">
+                    Gh&#8373; 123.00
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6 col-lg-3 mt-4 mt-md-4 mt-lg-0">
+              <div className="card py-3">
+                <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                  <p className="card-title fs-4">Charges</p>
+                  <h5 className="card-text text-danger fs-3 fw-bold">
+                    Gh&#8373; 34.00
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Table  */}
           <div className="pb-5">
             <Box
@@ -348,164 +368,189 @@ const Approvals = () => {
   );
 };
 
-export default Approvals;
+export default Transactions;
 
+// define the rows
 const initialRows = [
   {
     id: 1,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Paid",
-    credit: "Paid",
+    status: "Pending",
   },
   {
     id: 2,
-    transaction_date: "26/Jun/2024",
-    client: "KORAPAY DISBURSEMENT",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Failed",
-    credit: "Failed",
+    status: "Pending",
   },
   {
     id: 3,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Paid",
-    credit: "Paid",
+    status: "Pending",
   },
   {
     id: 4,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Failed",
-    credit: "Failed",
+    status: "Pending",
   },
   {
     id: 5,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Authorization Pending",
-    credit: "Authorization Pending",
+    status: "Pending",
   },
   {
     id: 6,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Paid",
-    credit: "Paid",
+    status: "Pending",
   },
   {
     id: 7,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Failed",
-    credit: "Failed",
+    status: "Pending",
   },
   {
     id: 8,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Failed",
-    credit: "Failed",
+    status: "Pending",
   },
 
   {
     id: 9,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Failed",
-    credit: "Failed",
+    status: "Pending",
   },
   {
     id: 10,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Authorization Pending",
-    credit: "Authorization Pending",
+    status: "Pending",
   },
   {
     id: 11,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Authorization Pending",
-    credit: "Authorization Pending",
+    status: "Pending",
   },
   {
     id: 12,
-    transaction_date: "17/Jun/2024",
-    client: "KORAPAY LIMITED TECHNOLOGIES",
-    client_description: "Kora checkout",
-    recipient_name: "Collections",
-    account_type: "Momo",
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
     amount: 2900,
-    charge: 20,
-    e_levy: 2,
-    debit: "Failed",
-    credit: "Failed",
+    status: "Pending",
   },
-];
+  {
+    id: 13,
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
+    amount: 2900,
+    status: "Pending",
+  },
+  {
+    id: 14,
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
+    amount: 2900,
+    status: "Pending",
+  },
+  {
+    id: 15,
+    date_initiated: "17/Jun/2024",
+    description: "Kora checkout",
+    start_date: "17/Jun/2024",
+    end_date: "17/Jun/2024",
+    account_number: "1234567890000",
+    account_name: "Collections",
+    account_issuer: "Momo",
+    amount: 2900,
+    status: "Pending",
+  },
+]

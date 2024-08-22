@@ -31,9 +31,9 @@ const Dashboard = () => {
                         <DatePicker />
                     </div>
 
-                    <div className="row m-0 d-md-flex border border-primary">
-                        <div className="col-12 col-lg-6 p-0 border border-info">
-                            <div className="row m-0 border border-danger">
+                    <div className="row m-0 d-md-flex">
+                        <div className="col-12 col-lg-6 p-0">
+                            <div className="row m-0">
                                 <TransactionsOverview />
 
                                 <p className="m-0 p-0 text-danger my-auto">Transactions Amounts</p>
@@ -42,7 +42,7 @@ const Dashboard = () => {
 
                             </div>
                         </div>
-                        <div className="col-12 col-lg-6 p-0 border border-info">
+                        <div className="col-12 col-lg-6 p-0">
                             <div className="row m-0">
                                 <div className="col-12 p-0 pb-3 ps-lg-3">
                                     <TransactionsStatus />

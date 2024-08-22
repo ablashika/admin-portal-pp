@@ -13,7 +13,7 @@ const PaymentsSource = () => {
     return (
         <>
 
-            <div className="card rounded border border-dark shadow">
+            <div className="card rounded border-0 shadow">
                 <p className='d-flex justify-content-center m-0 py-3'>Payments Source Channels</p>
                 <div className='d-flex justify-content-center align-items-center w-100 h-100'>
                     <PieChart

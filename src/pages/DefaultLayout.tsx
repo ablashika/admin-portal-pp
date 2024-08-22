@@ -11,7 +11,7 @@ const DefaultLayout = () => {
             <div className={`${styles.grid} ${mediaQueries.grid}`}>
                 <Sidebar />
 
-                <div className="w-100 overflow-x-hidden overflow-y-scroll border border-primary">
+                <div className="w-100 overflow-x-hidden overflow-y-scroll">
                     <Outlet />
                 </div>
 

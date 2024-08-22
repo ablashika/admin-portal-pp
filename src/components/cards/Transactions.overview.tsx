@@ -5,7 +5,7 @@ const TransactionsOverview = () => {
         <>
             <div className="col-12 col-md-6 p-0 pb-3 pe-md-3">
                 {/* Total transactions */}
-                <div className="py-3 px-3 card h-100 p-0 rounded border-success shadow d-flex flex-column justify-content-center align-items-start">
+                <div className="border-0 py-3 px-3 card h-100 p-0 rounded shadow d-flex flex-column justify-content-center align-items-start">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -29,7 +29,7 @@ const TransactionsOverview = () => {
 
             <div className="col-12 col-md-6 p-0 pb-3 ps-md-3">
                 {/* Paid charges */}
-                <div className="py-3 px-3 card h-100 rounded border-success shadow d-flex flex-column justify-content-center align-items-start">
+                <div className="border-0 py-3 px-3 card h-100 rounded shadow d-flex flex-column justify-content-center align-items-start">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -53,7 +53,7 @@ const TransactionsOverview = () => {
 
             <div className="col-12 col-md-6 py-3 p-0 pe-md-3 ">
                 {/* Total elevy */}
-                <div className="py-3 px-3 card h-100 rounded border-success shadow d-flex flex-column justify-content-center align-items-start">
+                <div className="border-0 py-3 px-3 card h-100 rounded shadow d-flex flex-column justify-content-center align-items-start">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -77,7 +77,7 @@ const TransactionsOverview = () => {
 
             <div className="col-12 col-md-6 py-3 p-0 ps-md-3">
                 {/* Approved merchants */}
-                <div className="py-3 px-3 card h-100 rounded border-success shadow d-flex flex-column justify-content-center align-items-start">
+                <div className="border-0 py-3 px-3 card h-100 rounded shadow d-flex flex-column justify-content-center align-items-start">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
